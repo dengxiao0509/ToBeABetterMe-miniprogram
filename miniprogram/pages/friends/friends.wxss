@@ -1,0 +1,11 @@
+/* miniprogram/pages/friends/friends.wxss */
+.add-friend-btn {
+    margin-top: 30px;
+}
+
+.avatar-in-list {
+    margin-right: 16px;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}

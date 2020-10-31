@@ -1,0 +1,18 @@
+<!--miniprogram/pages/friends/friends.wxml-->
+<mp-navigation-bar loading="{{loading}}" show="true" animated="{{animated}}" color="{{color}}"
+    background="{{background}}" title="Friends" back="{{true}}">
+</mp-navigation-bar>
+<view class="friends-container">
+    <mp-cells ext-class="my-cells" title="已有好友">
+        <view wx:for="{{list}}" wx:key="openid">
+            <mp-cell link value="{{item.nickName}}" url="../friendDetail/friendDetail?id={{item.openid}}">
+                <view slot="footer">去PK</view>
+                <image slot="icon" src="{{item.avatar}}" class="avatar-in-list"></image>
+            </mp-cell>
+            <!-- <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap">
+                <mp-cell value="左滑可以删除" footer="说明文字"></mp-cell>
+            </mp-slideview> -->
+        </view>
+    </mp-cells>
+    <button open-type="share" type="primary" class="add-friend-btn">+ 邀请好友</button>
+</view>

@@ -1,0 +1,20 @@
+{
+  "name": "to-be-a-better-me",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@miniprogram-component-plus/col": "^1.0.0",
+    "@miniprogram-component-plus/row": "^1.0.0",
+    "immutability-helper": "^3.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.12.1",
+    "eslint-plugin-miniprogram": "^0.2.0"
+  }
+}
