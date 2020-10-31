@@ -49,7 +49,6 @@ Page({
                                 list: newList
                             })
                         } catch (e) {
-                            console.log(e)
                             wx.showToast({
                                 icon: 'none',
                                 title: e.message || `添加好友失败`,
@@ -60,8 +59,6 @@ Page({
             })
         }
         this.updateFriendsList()
-
-        console.log(options)
     },
 
     updateFriendsDataInDB: async function (source, target) {
@@ -103,7 +100,6 @@ Page({
                     list: record.friends
                 })
             }
-            console.log(this.data.list)
         } catch (e) {
             wx.showToast({
                 icon: 'none',

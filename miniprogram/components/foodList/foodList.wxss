@@ -1,0 +1,28 @@
+/* components/foodList/foodList.wxss */
+.food-container {
+    padding: 20px;
+}
+
+.label-bar {
+    line-height: 30px;
+    margin: 10px 0;
+}
+
+.add-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: -4px;
+    margin-left: 12px;
+}
+
+.type-title {
+    font-size: 24px;
+    display: inline;
+    line-height: 30px;
+}
+
+.divider {
+    border-bottom: 1px solid lightgrey;
+    margin: 20px 0;
+}

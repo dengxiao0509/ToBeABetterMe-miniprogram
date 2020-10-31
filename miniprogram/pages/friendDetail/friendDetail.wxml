@@ -1,7 +1,8 @@
 <!--miniprogram/pages/friendDetail/friendDetail.wxml-->
 <mp-navigation-bar loading="{{loading}}" show="true" animated="{{animated}}" color="{{color}}"
-    background="{{background}}" title="Let's PK" back="{{true}}">
+    background="{{background}}" title="好友动态" back="{{true}}">
 </mp-navigation-bar>
 <view class="friends-detail-container">
-    <text>miniprogram/pages/friendDetail/friendDetail.wxml</text>
+    <foodList editable="{{false}}" openid="{{openid}}">
+    </foodList>
 </view>

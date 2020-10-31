@@ -1,0 +1,8 @@
+{
+    "component": true,
+    "usingComponents": {
+        "mp-icon": "/miniprogram_npm/weui-miniprogram/icon/icon",
+        "mp-navigation-bar": "/miniprogram_npm/weui-miniprogram/navigation-bar/navigation-bar",
+        "mp-gallery": "/miniprogram_npm/weui-miniprogram/gallery/gallery"
+    }
+}

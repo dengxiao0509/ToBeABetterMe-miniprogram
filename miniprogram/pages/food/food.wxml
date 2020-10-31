@@ -2,30 +2,5 @@
 <mp-navigation-bar loading="{{loading}}" show="true" animated="{{animated}}" color="{{color}}"
     background="{{background}}" title="Food" back="{{true}}">
 </mp-navigation-bar>
-<view class="food-container">
-    <view wx:for="{{listKeys}}" wx:for-item="type" wx:key="*this">
-        <view class="label-bar">
-            <view class="type-title">{{keyNameMap[type]}}</view>
-            <view bindtap="addFoodImg" data-type="{{type}}" style="display: inline">
-                <mp-icon type="field" icon="add2" color="black" size="{{25}}" class="add-icon"></mp-icon>
-            </view>
-        </view>
-        <view wx:if="{{list[type].length}}" data-type="{{type}}" bindtap="showGallery">
-            <mp-row>
-                <swiper indicator-dots="true" autoplay="true" interval="3000" duration="500">
-                    <block wx:for="{{list[type]}}" wx:key="date">
-                        <swiper-item>
-                            <view class="swiper-item">
-                                <image src="{{item.img}}"></image>
-                            </view>
-                        </swiper-item>
-                    </block>
-                </swiper>
-            </mp-row>
-        </view>
-        <view class="divider"></view>
-    </view>
-    <mp-gallery show="{{showGallery}}" bindchange="changeGalleryImg" binddelete="deleteGalleryImg"
-        bindhide="hideGallery" img-urls="{{galleryImgUrls}}" delete hide-on-click="{{true}}"
-        current="{{galleryCurrent}}"></mp-gallery>
-</view>
+<foodList editable="{{true}}" deleteGalleryImg="{{deleteGalleryImg}}" addFoodImg="{{addFoodImg}}" openid="{{openid}}">
+</foodList>

@@ -6,7 +6,7 @@
     <mp-cells ext-class="my-cells" title="已有好友">
         <view wx:for="{{list}}" wx:key="openid">
             <mp-cell link value="{{item.nickName}}" url="../friendDetail/friendDetail?id={{item.openid}}">
-                <view slot="footer">去PK</view>
+                <view slot="footer">动态</view>
                 <image slot="icon" src="{{item.avatar}}" class="avatar-in-list"></image>
             </mp-cell>
             <!-- <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap">

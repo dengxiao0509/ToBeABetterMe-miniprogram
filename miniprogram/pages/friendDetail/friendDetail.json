@@ -1,7 +1,8 @@
 {
   "usingComponents": {
+    "foodList": "/components/foodList/foodList",
     "mp-navigation-bar": "/miniprogram_npm/weui-miniprogram/navigation-bar/navigation-bar"
   },
   "navigationStyle": "custom",
-  "navigationBarTitleText": "Let's PK"
+  "navigationBarTitleText": "好友动态"
 }
