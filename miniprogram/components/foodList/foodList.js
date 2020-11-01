@@ -9,6 +9,7 @@ Component({
     properties: {
         openid: String,
         editable: Boolean,
+        date: String,
     },
 
     /**
@@ -23,10 +24,10 @@ Component({
         },
         listKeys: ['breakfast', 'lunch', 'dinner', 'snacks'],
         keyNameMap: {
-            breakfast: 'Breakfast',
-            lunch: 'Lunch',
-            dinner: 'Dinner',
-            snacks: 'Snacks'
+            breakfast: '早餐',
+            lunch: '午餐',
+            dinner: '晚餐',
+            snacks: '小食'
         },
         loading: false,
         showGallery: false,
@@ -42,7 +43,8 @@ Component({
         addFoodImg: function (e) {
             const type = e.currentTarget.dataset.type
             const _this = this
-
+            const date = this.properties.date
+            console.log('addFoodImg', date)
             wx.chooseImage({
                 count: 9,
                 sizeType: ['original', 'compressed'],
@@ -53,19 +55,16 @@ Component({
                     })
                     // tempFilePath可以作为img标签的src属性显示图片
                     const tempFilePaths = res.tempFilePaths
-                    let newData
+                    let newList
+                    console.log('tempFilePaths', tempFilePaths)
                     tempFilePaths.forEach(path => {
-                        const cloudPath = `food-image-${Date.now()}${path.match(/\.[^.]+?$/)[0]}`
-                        newData = update(_this.data, {
-                            list: {
-                                [type]: {
-                                    $push: tempFilePaths.map(url => {
-                                        return {
-                                            img: url,
-                                            _openid: _this.properties.openid
-                                        }
-                                    })
-                                }
+                        const cloudPath = `food-image-${new Date(date).getTime()}${path.match(/\.[^.]+?$/)[0]}`
+                        newList = update(_this.data.list, {
+                            [type]: {
+                                $push: [{
+                                    img: path,
+                                    _openid: _this.properties.openid
+                                }]
                             }
                         })
                         wx.cloud.uploadFile({
@@ -77,7 +76,7 @@ Component({
                                 db.collection('food').add({
                                     data: {
                                         type,
-                                        date: Date.now(),
+                                        date: new Date(date).getTime(),
                                         img: res.fileID,
                                     },
                                     fail: console.error
@@ -99,7 +98,9 @@ Component({
                             }
                         })
                     })
-                    _this.setData(newData)
+                    _this.setData({
+                        list: newList
+                    })
                 }
             })
         },
@@ -108,6 +109,7 @@ Component({
             // 删除图片
             const target = this.data.list[this.data.galleryImgsType].find(item => item.img === e.detail.url)
             if (target) {
+                console.log(target)
                 if (target._id) {
                     db.collection('food').doc(target._id).remove({
                         success: (res) => {
@@ -120,12 +122,12 @@ Component({
                                     $set: this.data.list[this.data.galleryImgsType].filter(item => item.img !== e.detail.url)
                                 }
                             })
-                            console.log('newList', newList)
                             this.setData({
                                 galleryCurrent: 0,
                                 list: newList,
                             })
                         }, fail: (e) => {
+                            console.error(e)
                             wx.showToast({
                                 icon: 'none',
                                 title: '删除失败',
@@ -154,36 +156,56 @@ Component({
                 galleryImgsType: type
             })
         },
-    },
-    ready: async function () {
-        const _this = this
-        this.setData({
-            loading: true
-        })
-        const openId = this.properties.openid
-        console.log('this.properties', this.properties)
-        if (openId) {
-            try {
-                // 拉取数据
-                const res = await db.collection('food').where({
-                    _openid: openId,
-                }).get()
-                const newList = _this.data.list
-                res.data.forEach(item => {
-                    newList[item.type].unshift(item)
-                })
-                _this.setData(update(_this.data, {
-                    list: {
-                        $set: newList
+        updateList: async function (date) {
+            const _this = this
+            this.setData({
+                loading: true
+            })
+            const openId = this.properties.openid
+            if (openId) {
+                try {
+                    const startDate = new Date(new Date(date).setHours(0, 0, 0, 0)).getTime()
+                    const endDate = new Date(new Date(date).setHours(23, 59, 59, 999)).getTime()
+                    const _ = db.command
+                    // 拉取数据
+                    const res = await db.collection('food').where({
+                        _openid: openId,
+                        date: _.gte(startDate).and(_.lt(endDate))
+                    }).get()
+                    console.log(res)
+                    let newList = {
+                        breakfast: [],
+                        lunch: [],
+                        dinner: [],
+                        snacks: []
                     }
-                }))
-            } catch (e) {
-                console.error(e)
+                    res.data.forEach(item => {
+                        newList = update(newList, {
+                            [item.type]: {
+                                $unshift: [item]
+                            }
+                        })
+                    })
+                    console.log(newList)
+                    _this.setData({
+                        list: newList
+                    })
+                } catch (e) {
+                    console.error(e)
+                }
             }
             this.setData({
                 loading: false
             })
-
-        }
+        },
+    },
+    ready: function () {
+        console.log('ready')
+        this.updateList(this.properties.date)
+    },
+    observers: {
+        'date': function (date) {
+            this.updateList(date)
+        },
     }
 })

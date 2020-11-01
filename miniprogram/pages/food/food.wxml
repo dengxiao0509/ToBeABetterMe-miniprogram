@@ -2,5 +2,11 @@
 <mp-navigation-bar loading="{{loading}}" show="true" animated="{{animated}}" color="{{color}}"
     background="{{background}}" title="Food" back="{{true}}">
 </mp-navigation-bar>
-<foodList editable="{{true}}" deleteGalleryImg="{{deleteGalleryImg}}" addFoodImg="{{addFoodImg}}" openid="{{openid}}">
+<picker mode="date" value="{{date}}" start="2015-09-01" end="2022-09-01" bindchange="bindDateChange">
+    <button class="picker">
+        {{date}}
+    </button>
+</picker>
+<foodList editable="{{true}}" deleteGalleryImg="{{deleteGalleryImg}}" addFoodImg="{{addFoodImg}}" openid="{{openid}}"
+    date="{{date}}">
 </foodList>

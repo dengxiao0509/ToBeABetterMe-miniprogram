@@ -3,15 +3,13 @@
     <view wx:for="{{listKeys}}" wx:for-item="type" wx:key="*this">
         <view class="label-bar">
             <view class="type-title">{{keyNameMap[type]}}</view>
-            <view wx:if="{{editable}}">
-                <view bindtap="addFoodImg" data-type="{{type}}" style="display: inline">
-                    <mp-icon type="field" icon="add2" color="black" size="{{25}}" class="add-icon"></mp-icon>
-                </view>
+            <view wx:if="{{editable}}" bindtap="addFoodImg" data-type="{{type}}" style="display: inline">
+                <mp-icon type="field" icon="add" size="{{25}}" class="add-icon"></mp-icon>
             </view>
         </view>
-        <view wx:if="{{list[type].length}}" data-type="{{type}}" bindtap="showGallery">
+        <view class="image-area" wx:if="{{list[type].length}}" data-type="{{type}}" bindtap="showGallery">
             <mp-row>
-                <swiper indicator-dots="true" autoplay="true" interval="3000" duration="500">
+                <swiper class="img-swiper" indicator-dots="true" autoplay="true" interval="3000" duration="500">
                     <block wx:for="{{list[type]}}" wx:key="date">
                         <swiper-item>
                             <view class="swiper-item">
@@ -22,6 +20,7 @@
                 </swiper>
             </mp-row>
         </view>
+
         <view class="divider"></view>
     </view>
     <mp-gallery show="{{showGallery}}" bindchange="changeGalleryImg" binddelete="deleteGalleryImg"

@@ -1,5 +1,7 @@
 // miniprogram/pages/food/food.js
 const app = getApp()
+const date = new Date()
+
 Page({
     /**
      * 页面的初始数据
@@ -7,6 +9,7 @@ Page({
     data: {
         loading: false,
         openid: '',
+        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
 
         // functions for components
         addFoodImg: null,
@@ -28,7 +31,6 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
-
 
     },
 
@@ -73,4 +75,11 @@ Page({
     onShareAppMessage: function () {
 
     },
+
+    bindDateChange: function (e) {
+        const val = e.detail.value
+        this.setData({
+            date: val
+        })
+    }
 })

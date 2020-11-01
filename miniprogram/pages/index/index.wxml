@@ -1,22 +1,19 @@
 <!--miniprogram/pages/index/index.wxml-->
 <view class="today-container">
-    <mp-row>
+    <!-- <mp-row>
         <mp-col span="{{5}}">
             <view class="page-title">Today</view>
-        </mp-col>
-        <!-- <open-data type="userNickName"></open-data> -->
-    </mp-row>
+        </mp-col> -->
+    <!-- <open-data type="userNickName"></open-data> -->
+    <!-- </mp-row> -->
+    <view class="avatar">
+        <open-data type="userAvatarUrl"></open-data>
+    </view>
     <view class="nav-button">
         <button bindtap="goToFoodPage" type="primary" plain="true">Food</button>
     </view>
     <view class="nav-button">
         <button type="primary" plain="true">Exercise</button>
     </view>
-    <view class="footer">
-        <view class="avatar">
-            <open-data type="userAvatarUrl"></open-data>
-        </view>
-        <button class="mini-btn friends-page-link" type="default" size="mini" bindtap="goToFriendsPage">> see my
-            friends</button>
-    </view>
+    <buttonTabBar current="{{0}}" />
 </view>

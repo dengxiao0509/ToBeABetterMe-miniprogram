@@ -1,11 +1,15 @@
 // miniprogram/pages/friendDetail/friendDetail.js
+const app = getApp()
+const date = new Date()
+
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        openid: ''
+        openid: '',
+        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
     },
 
     /**
@@ -13,10 +17,9 @@ Page({
      */
     onLoad: function (options) {
         const friendId = options.id
-        console.log('friendId', friendId)
-
+        console.log('id', friendId)
         this.setData({
-            openid: friendId
+            openid: friendId,
         })
     },
 
@@ -67,5 +70,11 @@ Page({
      */
     onShareAppMessage: function () {
 
+    },
+    bindDateChange: function (e) {
+        const val = e.detail.value
+        this.setData({
+            date: val
+        })
     }
 })

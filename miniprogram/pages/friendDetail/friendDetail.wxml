@@ -2,7 +2,12 @@
 <mp-navigation-bar loading="{{loading}}" show="true" animated="{{animated}}" color="{{color}}"
     background="{{background}}" title="好友动态" back="{{true}}">
 </mp-navigation-bar>
+<picker mode="date" value="{{date}}" start="2015-09-01" end="2022-09-01" bindchange="bindDateChange">
+    <button class="picker">
+        {{date}}
+    </button>
+</picker>
 <view class="friends-detail-container">
-    <foodList editable="{{false}}" openid="{{openid}}">
+    <foodList editable="{{false}}" openid="{{openid}}" date="{{date}}">
     </foodList>
 </view>

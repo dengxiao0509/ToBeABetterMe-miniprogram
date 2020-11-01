@@ -1,0 +1,12 @@
+<!--miniprogram/pages/friendsInvitation/friendsInvitation.wxml-->
+<view>
+    <view class="avatar-container">
+        <!-- <image src="{{friendInfo.avatarUrl}}" /> -->
+        <image class="avatar"
+            src="https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIVwoTaLNRWqvGUtrpZU6zFKKx2DLnL6EUnibT5yv1cIXGbpzRs5rzP2GIeY6e5A9ic0T0ZQEwC8e4g/132" />
+
+    </view>
+    <view class="tips">{{friendInfo.nickName}}邀请您成为好友，好友可查看彼此动态。如同意，请点击下方的按钮</view>
+    <button class="agree-btn" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" type="primary">同意并授权</button>
+    <button class="agree-btn" bindtap="goToHome" type="default">回到首页</button>
+</view>

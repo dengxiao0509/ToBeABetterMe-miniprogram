@@ -1,6 +1,6 @@
 /* components/foodList/foodList.wxss */
 .food-container {
-    padding: 20px;
+    padding: 30px;
 }
 
 .label-bar {
@@ -24,5 +24,14 @@
 
 .divider {
     border-bottom: 1px solid lightgrey;
-    margin: 20px 0;
+    margin: 30px 0;
+}
+
+image {
+    height: 300px;
+}
+
+.img-swiper {
+    height: 300px;
+    width: 80%;
 }

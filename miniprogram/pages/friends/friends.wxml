@@ -1,6 +1,6 @@
 <!--miniprogram/pages/friends/friends.wxml-->
 <mp-navigation-bar loading="{{loading}}" show="true" animated="{{animated}}" color="{{color}}"
-    background="{{background}}" title="Friends" back="{{true}}">
+    background="{{background}}" title="Friends" back="{{false}}">
 </mp-navigation-bar>
 <view class="friends-container">
     <mp-cells ext-class="my-cells" title="已有好友">
@@ -15,4 +15,5 @@
         </view>
     </mp-cells>
     <button open-type="share" type="primary" class="add-friend-btn">+ 邀请好友</button>
+    <buttonTabBar current="{{1}}" />
 </view>
