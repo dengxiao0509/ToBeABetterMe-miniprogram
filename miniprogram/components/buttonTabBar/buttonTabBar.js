@@ -1,10 +1,14 @@
 // components/buttonTabBar/buttonTabBar.js
 const TAB_BAR_LIST = [{
     'text': '首页',
-    'path': '../../pages/index/index'
+    'path': '../../pages/index/index',
+    "iconPath": "/images/home.png",
+    "selectedIconPath": "/images/home_active.png",
 }, {
     'text': '好友列表',
-    'path': '../../pages/friends/friends'
+    'path': '../../pages/friends/friends',
+    "iconPath": "/images/friends.png",
+    "selectedIconPath": "/images/friends_active.png",
 }]
 Component({
     /**

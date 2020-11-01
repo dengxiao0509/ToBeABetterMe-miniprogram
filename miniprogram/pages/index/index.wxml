@@ -1,11 +1,8 @@
 <!--miniprogram/pages/index/index.wxml-->
-<view class="today-container">
-    <!-- <mp-row>
-        <mp-col span="{{5}}">
-            <view class="page-title">Today</view>
-        </mp-col> -->
-    <!-- <open-data type="userNickName"></open-data> -->
-    <!-- </mp-row> -->
+<mp-navigation-bar show="true" animated="{{animated}}" color="{{color}}" background="{{background}}" title="Better Me"
+    back="{{false}}">
+</mp-navigation-bar>
+<view class="index-container">
     <view class="avatar">
         <open-data type="userAvatarUrl"></open-data>
     </view>
@@ -14,6 +11,9 @@
     </view>
     <view class="nav-button">
         <button type="primary" plain="true">Exercise</button>
+    </view>
+    <view class="nav-button">
+        <button type="primary" plain="true">Learning</button>
     </view>
     <buttonTabBar current="{{0}}" />
 </view>

@@ -172,7 +172,6 @@ Component({
                         _openid: openId,
                         date: _.gte(startDate).and(_.lt(endDate))
                     }).get()
-                    console.log(res)
                     let newList = {
                         breakfast: [],
                         lunch: [],
@@ -186,11 +185,13 @@ Component({
                             }
                         })
                     })
-                    console.log(newList)
                     _this.setData({
                         list: newList
                     })
                 } catch (e) {
+                    wx.showToast({
+                        title: '拉取列表失败',
+                    })
                     console.error(e)
                 }
             }

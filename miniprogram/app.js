@@ -40,7 +40,6 @@ App({
             }
           })
         }
-        console.log('index auth', res.authSetting)
       }
     })
 

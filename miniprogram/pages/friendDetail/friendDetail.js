@@ -9,7 +9,7 @@ Page({
      */
     data: {
         openid: '',
-        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`,
     },
 
     /**
@@ -17,7 +17,6 @@ Page({
      */
     onLoad: function (options) {
         const friendId = options.id
-        console.log('id', friendId)
         this.setData({
             openid: friendId,
         })

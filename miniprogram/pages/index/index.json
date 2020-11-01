@@ -2,6 +2,9 @@
   "usingComponents": {
     "mp-col": "@miniprogram-component-plus/col",
     "mp-row": "@miniprogram-component-plus/row",
-    "buttonTabBar": "../../components/buttonTabBar/buttonTabBar"
-  }
+    "buttonTabBar": "../../components/buttonTabBar/buttonTabBar",
+    "mp-navigation-bar": "/miniprogram_npm/weui-miniprogram/navigation-bar/navigation-bar"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "To Be A Better Me"
 }
