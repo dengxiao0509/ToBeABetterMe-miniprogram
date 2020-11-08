@@ -40,76 +40,86 @@ Component({
      * 组件的方法列表
      */
     methods: {
-        addFoodImg: function (e) {
+        addFoodImg: async function (e) {
             const type = e.currentTarget.dataset.type
             const _this = this
             const date = this.properties.date
-            console.log('addFoodImg', date)
+
             wx.chooseImage({
                 count: 9,
                 sizeType: ['original', 'compressed'],
                 sourceType: ['album', 'camera'],
-                success(res) {
+                success: async (res) => {
                     wx.showLoading({
                         title: '上传中',
                     })
                     // tempFilePath可以作为img标签的src属性显示图片
                     const tempFilePaths = res.tempFilePaths
-                    let newList
-                    console.log('tempFilePaths', tempFilePaths)
-                    tempFilePaths.forEach(path => {
+                    console.log('choose img', res)
+                    let newList = _this.data.list
+                    tempFilePaths.forEach(async (path) => {
                         const cloudPath = `food-image-${new Date(date).getTime()}${path.match(/\.[^.]+?$/)[0]}`
-                        newList = update(_this.data.list, {
-                            [type]: {
-                                $push: [{
-                                    img: path,
-                                    _openid: _this.properties.openid
-                                }]
-                            }
-                        })
-                        wx.cloud.uploadFile({
-                            cloudPath, // 上传至云端的路径
-                            filePath: path, // 小程序临时文件路径
-                            success: res => {
-                                // 返回文件 ID
-                                // 将ID存到数据库
-                                db.collection('food').add({
-                                    data: {
-                                        type,
-                                        date: new Date(date).getTime(),
-                                        img: res.fileID,
-                                    },
-                                    fail: console.error
-                                })
+                        // 检查图片是否合法
+                        try {
+                            const imgInfo = await wx.getImageInfo({
+                                src: path
+                            })
+                            console.log('imgInfo', imgInfo)
+                            const res = await wx.cloud.callFunction({
+                                name: 'imgSecurity',
+                                data: {
+                                    cloudPath,
+                                    filePath: wx.cloud.CDN({
+                                        type: 'filePath',
+                                        filePath: path,
+                                    }),
+                                    date,
+                                    type,
+                                    openId: _this.properties.openid,
+                                    fileFormat: imgInfo.type
+                                }
+                            })
+                            console.log('checkres', res)
+                            if (res.result && res.result.code === 0) {
                                 wx.showToast({
                                     icon: 'success',
                                     title: '上传成功',
                                 })
-                            },
-                            fail: () => {
-                                console.error('[上传文件] 失败：', e)
+                                newList = update(newList, {
+                                    [type]: {
+                                        $push: [{
+                                            img: path,
+                                            _openid: _this.properties.openid,
+                                            _id: res.result?.data?.fileId
+                                        }]
+                                    }
+                                })
+
+                            } else {
                                 wx.showToast({
                                     icon: 'none',
-                                    title: '上传失败',
+                                    title: res?.result?.msg || '上传失败',
                                 })
-                            },
-                            complete: () => {
-                                wx.hideLoading()
                             }
+                        } catch (e) {
+                            console.log('[上传文件] 失败：', e)
+                            wx.showToast({
+                                icon: 'none',
+                                title: '上传失败',
+                            })
+                        }
+
+                        _this.setData({
+                            list: newList
                         })
-                    })
-                    _this.setData({
-                        list: newList
                     })
                 }
             })
         },
         deleteGalleryImg: function (e) {
-            console.log('deleteGalleryImg', e.detail)
             // 删除图片
             const target = this.data.list[this.data.galleryImgsType].find(item => item.img === e.detail.url)
             if (target) {
-                console.log(target)
                 if (target._id) {
                     db.collection('food').doc(target._id).remove({
                         success: (res) => {
@@ -135,7 +145,6 @@ Component({
                         }
                     })
                 }
-
             }
         },
         hideGallery: function (e) {
@@ -161,6 +170,7 @@ Component({
             this.setData({
                 loading: true
             })
+            console.log('call updateList', openId)
             const openId = this.properties.openid
             if (openId) {
                 try {
@@ -172,6 +182,7 @@ Component({
                         _openid: openId,
                         date: _.gte(startDate).and(_.lt(endDate))
                     }).get()
+                    console.log('updateList', res)
                     let newList = {
                         breakfast: [],
                         lunch: [],
