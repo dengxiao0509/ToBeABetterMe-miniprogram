@@ -23,10 +23,11 @@ exports.main = async (event, context) => {
     }).get()
 
     if (stepInfoList && stepInfoList.length > 0) {
-        const ts = new Date(new Date(date).setHours(0, 0, 0, 0)).getTime()
+        const ts = new Date(`${date}T00:00:00.000+08:00`).getTime()
         queriedRecord = stepInfoList.find(item => item.timestamp === ts / 1000)
+        console.log('ts', ts, stepInfoList)
     }
-    console.log('dbRecord', dbRecord, JSON.stringify(queriedRecord))
+    console.log('dbRecord', dbRecord)
 
     // 新增记录
     if (!dbRecord || dbRecord.data.length === 0) {

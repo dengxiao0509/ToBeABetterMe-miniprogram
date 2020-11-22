@@ -57,6 +57,10 @@ Page({
                 this.setData({
                     step: res.result.step,
                 })
+            } else {
+                this.setData({
+                    step: 0,
+                })
             }
         }
     },
