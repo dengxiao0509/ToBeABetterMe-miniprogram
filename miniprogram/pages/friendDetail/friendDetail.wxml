@@ -10,4 +10,7 @@
 <view class="friends-detail-container">
     <foodList editable="{{false}}" openid="{{openid}}" date="{{date}}">
     </foodList>
+    <foodList editable="{{false}}" openid="{{openid}}" date="{{date}}" collection="sports"
+        customListKeys="{{sportsListKeys}}" customKeyNameMap="{{sportsKeyNameMap}}">
+    </foodList>
 </view>

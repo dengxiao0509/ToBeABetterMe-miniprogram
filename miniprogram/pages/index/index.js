@@ -75,4 +75,20 @@ Page({
             url: '../friends/friends',
         })
     },
+    goToSportPage: async () => {
+        try {
+            const res = await wx.getSetting()
+            if (!res.authSetting['scope.werun']) {
+                await wx.authorize({
+                    scope: 'scope.werun',
+                })
+            }
+            // 用户已经同意小程序使用微信运动
+            wx.navigateTo({
+                url: '../sports/sports',
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
 })

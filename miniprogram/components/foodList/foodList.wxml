@@ -7,21 +7,30 @@
                 <mp-icon type="field" icon="add" size="{{25}}" class="add-icon"></mp-icon>
             </view>
         </view>
-        <view class="image-area" wx:if="{{list[type].length}}" data-type="{{type}}" bindtap="showGallery">
+        <view class="image-area" wx:if="{{list[type].length}}">
             <mp-row>
-                <swiper class="img-swiper" indicator-dots="true" autoplay="true" interval="3000" duration="500">
+                <!-- <block wx:for="{{list[type]}}" wx:for-index="imgIndex" wx:key="date"> -->
+                <!-- <mp-col span="{{8}}"> -->
+                <swiper class="img-swiper" interval="3000" duration="0" data-type="{{type}}" data-current="{{imgIndex}}"
+                    bindtap="showGallery">
                     <block wx:for="{{list[type]}}" wx:key="date">
                         <swiper-item>
                             <view class="swiper-item">
-                                <image src="{{item.img}}"></image>
+                                <image src="{{item.img}}" mode="aspectFit"
+                                    style="margin-left:{{imgsMarginLeft[item.img] || 0}}px" bindload="handleImgload"
+                                    id="{{item.img}}">
+                                </image>
                             </view>
                         </swiper-item>
                     </block>
                 </swiper>
+                <!-- </mp-col> -->
+                <!-- </block> -->
             </mp-row>
         </view>
 
-        <view class="divider"></view>
+        <view class=" divider">
+        </view>
     </view>
     <mp-gallery show="{{showGallery}}" bindchange="changeGalleryImg" binddelete="deleteGalleryImg"
         bindhide="hideGallery" img-urls="{{galleryImgUrls}}" delete showDelete="{{editable}}" hide-on-click="{{true}}"

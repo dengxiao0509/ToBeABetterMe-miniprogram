@@ -1,0 +1,6 @@
+/* miniprogram/pages/sports/sports.wxss */
+.we-run {
+    padding: 30px;
+    line-height: 30px;
+    font-size: 24px;
+}

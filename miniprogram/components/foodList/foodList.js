@@ -10,6 +10,12 @@ Component({
         openid: String,
         editable: Boolean,
         date: String,
+        collection: {
+            type: String,
+            value: 'food'
+        },
+        customListKeys: Array,
+        customKeyNameMap: Object
     },
 
     /**
@@ -22,6 +28,7 @@ Component({
             dinner: [],
             snacks: []
         },
+        // imgsStyle: {},
         listKeys: ['breakfast', 'lunch', 'dinner', 'snacks'],
         keyNameMap: {
             breakfast: '早餐',
@@ -43,7 +50,10 @@ Component({
         addFoodImg: async function (e) {
             const type = e.currentTarget.dataset.type
             const _this = this
-            const date = this.properties.date
+            const {
+                date,
+                collection
+            } = this.properties
 
             wx.chooseImage({
                 count: 9,
@@ -55,16 +65,14 @@ Component({
                     })
                     // tempFilePath可以作为img标签的src属性显示图片
                     const tempFilePaths = res.tempFilePaths
-                    console.log('choose img', res)
                     let newList = _this.data.list
                     tempFilePaths.forEach(async (path) => {
-                        const cloudPath = `food-image-${new Date(date).getTime()}${path.match(/\.[^.]+?$/)[0]}`
+                        const cloudPath = `${collection}-image-${new Date(date).getTime()}-${Date.now()}${path.match(/\.[^.]+?$/)[0]}`
                         // 检查图片是否合法
                         try {
                             const imgInfo = await wx.getImageInfo({
                                 src: path
                             })
-                            console.log('imgInfo', imgInfo)
                             const res = await wx.cloud.callFunction({
                                 name: 'imgSecurity',
                                 data: {
@@ -76,7 +84,8 @@ Component({
                                     date,
                                     type,
                                     openId: _this.properties.openid,
-                                    fileFormat: imgInfo.type
+                                    fileFormat: imgInfo.type,
+                                    collection,
                                 }
                             })
                             console.log('checkres', res)
@@ -121,7 +130,7 @@ Component({
             const target = this.data.list[this.data.galleryImgsType].find(item => item.img === e.detail.url)
             if (target) {
                 if (target._id) {
-                    db.collection('food').doc(target._id).remove({
+                    db.collection(this.properties.collection).doc(target._id).remove({
                         success: (res) => {
                             wx.showToast({
                                 icon: 'success',
@@ -162,7 +171,8 @@ Component({
             this.setData({
                 galleryImgUrls: this.data.list[type].map(item => item.img),
                 showGallery: true,
-                galleryImgsType: type
+                galleryImgsType: type,
+                galleryCurrent: e.currentTarget.dataset.current
             })
         },
         updateList: async function (date) {
@@ -170,28 +180,30 @@ Component({
             this.setData({
                 loading: true
             })
-            console.log('call updateList', openId)
             const openId = this.properties.openid
+
             if (openId) {
                 try {
-                    const startDate = new Date(new Date(date).setHours(0, 0, 0, 0)).getTime()
-                    const endDate = new Date(new Date(date).setHours(23, 59, 59, 999)).getTime()
                     const _ = db.command
+
                     // 拉取数据
-                    const res = await db.collection('food').where({
+                    const res = await db.collection(_this.properties.collection).where({
                         _openid: openId,
-                        date: _.gte(startDate).and(_.lt(endDate))
+                        date,
                     }).get()
-                    console.log('updateList', res)
-                    let newList = {
-                        breakfast: [],
-                        lunch: [],
-                        dinner: [],
-                        snacks: []
-                    }
+                    console.log('updatelist', res)
+
+                    let newList = this.properties.collection === 'sports' ? {
+                        default: []
+                    } : {
+                            breakfast: [],
+                            lunch: [],
+                            dinner: [],
+                            snacks: []
+                        }
                     res.data.forEach(item => {
                         newList = update(newList, {
-                            [item.type]: {
+                            [item.type || 'default']: {
                                 $unshift: [item]
                             }
                         })
@@ -210,14 +222,45 @@ Component({
                 loading: false
             })
         },
+        handleImgload: function (e) {
+            // let imgStyle
+            // if (e.detail.width <= 250) {
+            //     imgStyle = {
+            //         width: e.detail.width,
+            //         height: e.detail.height,
+            //     }
+            // } else {
+            //     imgStyle = {
+            //         width: 250,
+            //         height: Math.ceil(250 * e.detail.height / e.detail.width),
+            //     }
+            // }
+            // console.log(imgStyle)
+            // this.setData({
+            //     imgsStyle: update(this.data.imgsStyle, {
+            //         [e.target.id]: {
+            //             $set: imgStyle
+            //         }
+            //     })
+            // })
+        },
     },
     ready: function () {
-        console.log('ready')
         this.updateList(this.properties.date)
     },
     observers: {
         'date': function (date) {
             this.updateList(date)
         },
-    }
+        'customListKeys': function (val) {
+            this.setData({
+                listKeys: val
+            })
+        },
+        'customKeyNameMap': function (val) {
+            this.setData({
+                keyNameMap: val
+            })
+        }
+    },
 })

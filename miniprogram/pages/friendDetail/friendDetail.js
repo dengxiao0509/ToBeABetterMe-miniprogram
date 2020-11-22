@@ -10,6 +10,10 @@ Page({
     data: {
         openid: '',
         date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`,
+        sportsKeyNameMap: {
+            default: '运动打卡'
+        },
+        sportsListKeys: ['default'],
     },
 
     /**

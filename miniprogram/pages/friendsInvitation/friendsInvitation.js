@@ -79,7 +79,6 @@ Page({
     },
     onGetUserInfo: async function (e) {
         let userInfo = this.data.userInfo
-        console.log(e.detail.userInfo)
         if (!this.data.logged && e.detail.userInfo) {
             this.setData({
                 logged: true,

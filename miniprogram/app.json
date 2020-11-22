@@ -1,10 +1,11 @@
 {
     "pages": [
         "pages/index/index",
+        "pages/sports/sports",
+        "pages/food/food",
         "pages/friendDetail/friendDetail",
         "pages/friendsInvitation/friendsInvitation",
         "pages/friends/friends",
-        "pages/food/food",
         "pages/userConsole/userConsole",
         "pages/storageConsole/storageConsole",
         "pages/databaseGuide/databaseGuide",

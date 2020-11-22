@@ -9,9 +9,10 @@ const checkImgFileByCDNUrl = (event) => {
             filePath,
             cloudPath,
             date,
-            type,
+            type = 'default',
             openId,
-            fileFormat
+            fileFormat,
+            collection = 'food',
         } = event
 
         const db = cloud.database()
@@ -22,6 +23,7 @@ const checkImgFileByCDNUrl = (event) => {
             }).on('end', async () => {
                 const buf = Buffer.concat(data)
                 try {
+                    console.log(buf)
                     const res = await cloud.openapi.security.imgSecCheck({
                         media: {
                             contentType: `image/${fileFormat}`,
@@ -35,19 +37,42 @@ const checkImgFileByCDNUrl = (event) => {
                                 cloudPath,
                                 fileContent: buf,
                             })
-                            const dbRes = await db.collection('food').add({
-                                data: {
-                                    type,
-                                    date: new Date(date).getTime(),
-                                    img: uploadRes.fileID,
-                                    _openid: openId
-                                },
-                            })
+
+                            let dbRes,
+                                recordId
+
+                            // sports 走更新
+                            if (collection === 'sports') {
+
+                                const dbTarget = await db.collection(collection).where({
+                                    date,
+                                }).get()
+                                recordId = dbTarget.data[0]._id
+
+                                // 拉取数据
+                                dbRes = await db.collection(collection).doc(recordId).update({
+                                    data: {
+                                        img: uploadRes.fileID,
+                                        _openid: openId
+                                    },
+                                })
+                            } else {
+                                dbRes = await db.collection(collection).add({
+                                    data: {
+                                        type,
+                                        date,
+                                        img: uploadRes.fileID,
+                                        _openid: openId
+                                    },
+                                })
+                                recordId = dbRes._id
+                            }
+
                             resolve({
                                 code: 0,
                                 msg: '',
                                 data: {
-                                    fileId: dbRes._id
+                                    fileId: recordId
                                 }
                             })
                         } catch (e) {

@@ -1,0 +1,13 @@
+<!--miniprogram/pages/sports/sports.wxml-->
+<picker mode="date" value="{{date}}" start="2015-09-01" end="2022-09-01" bindchange="bindDateChange">
+    <button class="picker">
+        {{date}}
+    </button>
+</picker>
+<view class="we-run">今日步数：{{step}}</view>
+<view>
+    <foodList editable="{{true}}" deleteGalleryImg="{{deleteGalleryImg}}" addFoodImg="{{addFoodImg}}"
+        openid="{{openid}}" date="{{date}}" collection="sports" customListKeys="{{customListKeys}}"
+        customKeyNameMap="{{customKeyNameMap}}">
+    </foodList>
+</view>

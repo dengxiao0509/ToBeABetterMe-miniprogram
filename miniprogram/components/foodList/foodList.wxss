@@ -28,13 +28,5 @@
 }
 
 .img-swiper {
-    height: 300px;
-}
-
-.swiper-item {
-    height: 80%;
-}
-
-.swiper-item image {
-    width: 100%;
+    height: 200px;
 }

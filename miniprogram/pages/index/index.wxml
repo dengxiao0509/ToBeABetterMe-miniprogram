@@ -7,13 +7,14 @@
         <open-data type="userAvatarUrl"></open-data>
     </view>
     <view class="nav-button">
-        <button bindtap="goToFoodPage" type="primary" plain="true">Food</button>
+        <button bindtap="goToFoodPage" type="primary" plain="true">食</button>
     </view>
     <view class="nav-button">
-        <button type="primary" plain="true">Exercise</button>
+        <button bindtap="goToSportPage" type="primary" plain="true">运动</button>
     </view>
+    <!--
     <view class="nav-button">
         <button type="primary" plain="true">Learning</button>
-    </view>
+    </view> -->
     <buttonTabBar current="{{0}}" />
 </view>
